@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration | Douanes Mali Enchères</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .admin-header {
+            background: var(--color-primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .admin-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--color-gray);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .admin-tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+            background: white;
+        }
+
+        .admin-content {
+            padding: 30px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* Search Bar */
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius-md);
+        }
+
+        /* Table */
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .user-table th,
+        .user-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        /* Loader */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--color-primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s;
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            background: var(--color-primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: var(--border-radius-lg);
+            border-top-right-radius: var(--border-radius-lg);
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .close-modal {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: #ddd;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .user-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .user-detail-label {
+            font-weight: 600;
+            color: var(--color-gray);
+        }
+
+        .user-detail-value {
+            font-weight: 500;
+            color: #333;
+            text-align: right;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-main">
+            <div class="container">
+                <div class="header-inner">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="Accueil _ Douanes_files/Douanes-Logo_1.gif" alt="Logo Douanes Mali">
+                        </a>
+                    </div>
+                    <div style="font-weight: 700; color: var(--color-primary);">PORTAIL ADMIN</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="admin-container">
+                <div class="admin-header">
+                    <h2><i class="fas fa-cogs"></i> Administration</h2>
+                    <button onclick="window.location.reload()" class="btn-secondary"
+                        style="color: white; border-color: white; padding: 5px 15px; font-size: 14px;">Actualiser</button>
+                </div>
+
+                <div class="admin-tabs">
+                    <div class="admin-tab active" onclick="switchTab('users')">
+                        <i class="fas fa-users"></i> Gestion Utilisateurs
+                    </div>
+                    <div class="admin-tab" onclick="switchTab('payment')">
+                        <i class="fas fa-credit-card"></i> Configuration Paiement
+                    </div>
+                    <div class="admin-tab" onclick="switchTab('contact')">
+                        <i class="fab fa-whatsapp"></i> Contact WhatsApp
+                    </div>
+                </div>
+
+                <div class="admin-content">
+                    <!-- USERS TAB -->
+                    <div id="users-tab" class="tab-pane active">
+                        <div class="search-box">
+                            <input type="text" id="userSearch" class="search-input"
+                                placeholder="Rechercher par nom, téléphone ou NINA..." onkeyup="searchUsers()">
+                            <button class="btn-primary" onclick="loadUsers()"><i class="fas fa-search"></i>
+                                Rechercher</button>
+                        </div>
+
+                        <div id="usersLoader" class="loader"></div>
+                        <div id="noUsersFound" style="display: none; text-align: center; padding: 40px; color: #999;">
+                            <i class="fas fa-user-slash" style="font-size: 48px; margin-bottom: 10px;"></i>
+                            <p>Aucun utilisateur trouvé</p>
+                        </div>
+
+                        <div style="overflow-x: auto;">
+                            <table class="user-table" id="userTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nom Complet</th>
+                                        <th>Téléphone</th>
+                                        <th>Ville</th>
+                                        <th>N° NINA</th>
+                                        <th>Véhicule</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- PAYMENT TAB -->
+                    <div id="payment-tab" class="tab-pane">
+                        <h3 style="margin-bottom: 20px; color: var(--color-primary);">Modifier les Informations de
+                            Paiement</h3>
+
+                        <form id="paymentForm" onsubmit="updatePayment(event)">
+                            <div class="form-group">
+                                <label class="form-label">Méthode de Paiement</label>
+                                <input type="text" id="methodName" class="form-control" value="Orange Money" disabled
+                                    style="background: #eee;">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Numéro de Compte / Téléphone</label>
+                                <input type="text" id="accountNumber" class="form-control" value="+223 00 00 00 00"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Nom du Titulaire</label>
+                                <input type="text" id="accountName" class="form-control" value="Douanes Mali Enchères"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Code USSD / Instructions</label>
+                                <input type="text" id="ussdCode" class="form-control" value="#144#" disabled
+                                    style="background: #eee;">
+                            </div>
+
+                            <button type="submit" class="btn-primary">Enregistrer les Modifications</button>
+                            <div id="paymentLoader" class="loader"
+                                style="display: inline-block; vertical-align: middle; margin: 0 0 0 10px;"></div>
+                        </form>
+                    </div>
+
+                    <!-- WHATSAPP CONTACT TAB -->
+                    <div id="contact-tab" class="tab-pane">
+                        <h3 style="margin-bottom: 20px; color: var(--color-primary);">Gérer le Numéro WhatsApp de
+                            Contact</h3>
+                        <p style="color: #666; margin-bottom: 30px;">Les clients utiliseront ce numéro pour vous
+                            contacter. Vous pouvez le modifier ici sans accéder au code.</p>
+
+                        <form id="contactForm" onsubmit="updateContact(event)">
+                            <div class="form-group">
+                                <label class="form-label">Numéro WhatsApp Actuel</label>
+                                <input type="tel" id="currentWhatsApp" class="form-control" disabled
+                                    style="background: #f8f9fa; color: #666;">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Nouveau Numéro WhatsApp</label>
+                                <input type="tel" id="whatsappNumber" class="form-control"
+                                    placeholder="+223 XX XX XX XX" required>
+                                <small style="color: #666;">Format: +223 XX XX XX XX</small>
+                            </div>
+
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-save"></i> Enregistrer le Nouveau Numéro
+                                </button>
+                                <button type="button" class="btn-secondary" onclick="testWhatsApp()"
+                                    style="background: #25D366; border-color: #25D366;">
+                                    <i class="fab fa-whatsapp"></i> Tester le Numéro
+                                </button>
+                                <div id="contactLoader" class="loader"
+                                    style="display: inline-block; vertical-align: middle; margin: 0;"></div>
+                            </div>
+                            <div id="contactSuccess"
+                                style="display: none; margin-top: 15px; padding: 10px; background: #d4edda; color: #155724; border-radius: 5px;">
+                                ✓ Numéro WhatsApp mis à jour avec succès !
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- USER DETAILS MODAL -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Détails de l'Utilisateur</h3>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content populated by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/supabase-config.js"></script>
+    <script>
+        // Tab Switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+            if (tabName === 'users') {
+                document.querySelectorAll('.admin-tab')[0].classList.add('active');
+                document.getElementById('users-tab').classList.add('active');
+                loadUsers();
+            } else if (tabName === 'payment') {
+                document.querySelectorAll('.admin-tab')[1].classList.add('active');
+                document.getElementById('payment-tab').classList.add('active');
+                loadPaymentSettings();
+            } else if (tabName === 'contact') {
+                document.querySelectorAll('.admin-tab')[2].classList.add('active');
+                document.getElementById('contact-tab').classList.add('active');
+                loadContactSettings();
+            }
+        }
+
+        // Load Users from Supabase
+        async function loadUsers() {
+            const loader = document.getElementById('usersLoader');
+            const tbody = document.getElementById('usersTableBody');
+            const noResults = document.getElementById('noUsersFound');
+            const table = document.getElementById('userTable');
+
+            loader.style.display = 'block';
+            noResults.style.display = 'none';
+            table.style.display = 'none';
+            tbody.innerHTML = '';
+
+            try {
+                console.log('Fetching users...');
+                const { data: users, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Supabase Error:', error);
+                    throw error;
+                }
+
+                console.log('Users found:', users.length);
+
+                if (!users || users.length === 0) {
+                    noResults.style.display = 'block';
+                    table.style.display = 'none';
+                } else {
+                    table.style.display = 'table';
+                    users.forEach(user => {
+                        const row = `
+                            <tr>
+                                <td>#${user.id}</td>
+                                <td>${user.full_name}</td>
+                                <td>${user.phone}</td>
+                                <td>${user.city}</td>
+                                <td>${user.nina_number || '-'}</td>
+                                <td>${user.vehicle_name || '-'}</td>
+                                <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                                <td><button class="btn-primary" style="padding: 5px 10px; font-size: 12px;" onclick='viewUser(${JSON.stringify(user)})'>Voir</button></td>
+                            </tr>
+                        `;
+                        tbody.innerHTML += row;
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+                alert('Erreur lors du chargement des utilisateurs. Vérifiez la console pour les détails.');
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // View User Details
+        function viewUser(user) {
+            const modal = document.getElementById('userModal');
+            const modalBody = document.getElementById('modalBody');
+
+            const content = `
+                <div class="user-detail-row">
+                    <span class="user-detail-label">ID:</span>
+                    <span class="user-detail-value">#${user.id}</span>
+                </div>
+                <div class="user-detail-row">
+                    <span class="user-detail-label">Nom Complet:</span>
+                    <span class="user-detail-value">${user.full_name}</span>
+                </div>
+                <div class="user-detail-row">
+                    <span class="user-detail-label">Téléphone:</span>
+                    <span class="user-detail-value">${user.phone}</span>
+                </div>
+                <div class="user-detail-row">
+                    <span class="user-detail-label">Ville:</span>
+                    <span class="user-detail-value">${user.city}</span>
+                </div>
+                <div class="user-detail-row">
+                    <span class="user-detail-label">N° NINA / CNI:</span>
+                    <span class="user-detail-value">${user.nina_number || '-'}</span>
+                </div>
+                <div class="user-detail-row">
+                    <span class="user-detail-label">Véhicule:</span>
+                    <span class="user-detail-value">${user.vehicle_name || '-'}</span>
+                </div>
+                <div class="user-detail-row">
+                    <span class="user-detail-label">Date d'inscription:</span>
+                    <span class="user-detail-value">${new Date(user.created_at).toLocaleString()}</span>
+                </div>
+            `;
+
+            modalBody.innerHTML = content;
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById('userModal').style.display = "none";
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('userModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Search Users
+        function searchUsers() {
+            const query = document.getElementById('userSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#usersTableBody tr');
+            const noResults = document.getElementById('noUsersFound');
+            const table = document.getElementById('userTable');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0 && rows.length > 0) {
+                noResults.style.display = 'block';
+                table.style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                table.style.display = 'table';
+            }
+        }
+
+        // Load Payment Settings
+        async function loadPaymentSettings() {
+            try {
+                const { data, error } = await supabase
+                    .from('payment_settings')
+                    .select('*')
+                    .limit(1)
+                    .single();
+
+                if (error) throw error;
+
+                if (data) {
+                    document.getElementById('methodName').value = data.method_name;
+                    document.getElementById('accountNumber').value = data.account_number;
+                    document.getElementById('accountName').value = data.account_name;
+                    document.getElementById('ussdCode').value = data.ussd_code;
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+
+        // Update Payment Settings
+        async function updatePayment(e) {
+            e.preventDefault();
+            const loader = document.getElementById('paymentLoader');
+            loader.style.display = 'inline-block';
+
+            const updatedData = {
+                account_number: document.getElementById('accountNumber').value,
+                account_name: document.getElementById('accountName').value
+            };
+
+            try {
+                const { error } = await supabase
+                    .from('payment_settings')
+                    .update(updatedData)
+                    .eq('id', 1);
+
+                if (error) throw error;
+
+                alert('Paramètres mis à jour avec succès !');
+            } catch (error) {
+                console.error('Error updating settings:', error);
+                alert('Erreur lors de la mise à jour: ' + error.message);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Load Contact Settings
+        async function loadContactSettings() {
+            try {
+                const { data, error } = await supabase
+                    .from('contact_settings')
+                    .select('*')
+                    .limit(1)
+                    .single();
+
+                if (data) {
+                    document.getElementById('currentWhatsApp').value = data.whatsapp_number;
+                    document.getElementById('whatsappNumber').value = data.whatsapp_number;
+                }
+            } catch (error) {
+                console.error('Error loading contact:', error);
+            }
+        }
+
+        // Update WhatsApp Contact
+        async function updateContact(e) {
+            e.preventDefault();
+            const loader = document.getElementById('contactLoader');
+            const successMsg = document.getElementById('contactSuccess');
+            loader.style.display = 'inline-block';
+            successMsg.style.display = 'none';
+
+            const newNumber = document.getElementById('whatsappNumber').value;
+
+            try {
+                const { error } = await supabase
+                    .from('contact_settings')
+                    .update({
+                        whatsapp_number: newNumber,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', 1);
+
+                if (error) throw error;
+
+                document.getElementById('currentWhatsApp').value = newNumber;
+                successMsg.style.display = 'block';
+                setTimeout(() => successMsg.style.display = 'none', 5000);
+            } catch (error) {
+                console.error('Error updating contact:', error);
+                alert('Erreur lors de la mise à jour: ' + error.message);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Test WhatsApp Number
+        function testWhatsApp() {
+            const number = document.getElementById('whatsappNumber').value;
+            const cleanNumber = number.replace(/\s+/g, '');
+            window.open(`https://wa.me/${cleanNumber}`, '_blank');
+        }
+
+        // Initial Load
+        loadUsers();
+    </script>
+</body>
+
+</html>

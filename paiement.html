@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Paiement - Enchères Douanes Mali">
+    <title>Paiement | Enchères Douanes Mali</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-main">
+            <div class="container">
+                <div class="header-inner">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="Accueil _ Douanes_files/Douanes-Logo_1.gif" alt="Logo Douanes Mali">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+
+            <div class="steps-container">
+                <div class="step active">
+                    <div class="step-circle"><i class="fas fa-check"></i></div>
+                    <span>Inscription</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step active">
+                    <div class="step-circle"><i class="fas fa-check"></i></div>
+                    <span>Conditions</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step active">
+                    <div class="step-circle">3</div>
+                    <span>Paiement</span>
+                </div>
+            </div>
+
+            <div class="form-container" style="max-width: 600px; margin: 0 auto;">
+
+                <!-- Payment Instructions Card -->
+                <div
+                    style="border: 1px solid var(--color-primary); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background: white;">
+
+                    <!-- Header -->
+                    <div
+                        style="background-color: var(--color-primary); color: white; padding: 15px 20px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-mobile-alt" style="font-size: 24px;"></i>
+                        <h3 style="margin: 0; font-size: 18px; color: white;">Instructions <span
+                                id="methodNameDisplay">Orange Money</span></h3>
+                    </div>
+
+                    <!-- Body -->
+                    <div style="padding: 25px;">
+
+                        <!-- Steps List -->
+                        <div style="font-size: 16px; line-height: 1.8; color: #333;">
+                            <p style="margin-bottom: 10px;">
+                                Composez <strong id="ussdCodeDisplay"
+                                    style="font-family: monospace; font-size: 18px;">*144#</strong> sur votre téléphone
+                            </p>
+                            <p style="margin-bottom: 10px;">
+                                Sélectionnez "Transfert d'argent"
+                            </p>
+                            <p style="margin-bottom: 10px;">
+                                Entrez le numéro : <strong style="border-bottom: 2px solid var(--color-primary);"><span
+                                        id="accountNumberDisplay">+223 00 00 00 00</span></strong> (<span
+                                    id="accountNameDisplay">Douanes Mali Enchères</span>)
+                            </p>
+                            <p style="margin-bottom: 10px;">
+                                Entrez le montant : <strong>Fr. 100,000</strong>
+                            </p>
+                            <p style="margin-bottom: 10px;">
+                                Confirmez avec votre code secret
+                            </p>
+                            <p style="margin-bottom: 20px;">
+                                Gardez le SMS de confirmation pour votre dossier
+                            </p>
+                        </div>
+
+                        <!-- Accessibility Text -->
+                        <p
+                            style="font-size: 14px; color: #666; font-style: italic; margin-bottom: 25px; text-align: center;">
+                            Pour garantir l'accessibilité à tous, le paiement de l'acompte se fait exclusivement via ce
+                            canal.
+                        </p>
+
+                        <!-- WhatsApp Button -->
+                        <div style="text-align: center; margin-bottom: 25px;">
+                            <a href="https://wa.me/22300000000?text=Bonjour, voici ma preuve de paiement pour l'enchère."
+                                class="btn-whatsapp"
+                                style="display: inline-block; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; background-color: #25D366; color: white; font-size: 16px; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3); transition: transform 0.2s;">
+                                <i class="fab fa-whatsapp" style="margin-right: 10px; font-size: 20px;"></i> Envoyer
+                                capture sur WhatsApp
+                            </a>
+                        </div>
+
+                        <!-- Important Note -->
+                        <div
+                            style="background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; border-radius: 4px;">
+                            <p style="margin: 0; color: #856404; font-size: 14px;">
+                                <strong>Important :</strong> Après avoir effectué le paiement, prenez une capture
+                                d'écran du SMS de confirmation et envoyez-la via WhatsApp.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <script src="js/supabase-config.js"></script>
+                <script>
+                    // Fetch Payment Settings from Supabase
+                    async function loadPaymentSettings() {
+                        try {
+                            const { data, error } = await supabase
+                                .from('payment_settings')
+                                .select('*')
+                                .limit(1)
+                                .single();
+
+                            if (error) throw error;
+
+                            if (data) {
+                                document.getElementById('methodNameDisplay').textContent = data.method_name;
+                                document.getElementById('accountNumberDisplay').textContent = data.account_number;
+                                document.getElementById('accountNameDisplay').textContent = data.account_name;
+                                document.getElementById('ussdCodeDisplay').textContent = data.ussd_code || 'N/A';
+                            }
+                        } catch (err) {
+                            console.error('Error loading payment settings:', err);
+                        }
+                    }
+
+                    // Load on page load
+                    loadPaymentSettings();
+                </script>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h4>Heure de travail</h4>
+                    <p><strong>Lundi-Jeudi:</strong> 8h30 à 12h30</p>
+                    <p><strong>Vendredi:</strong> 8h à 12h</p>
+                    <p><strong>Sunday:</strong> Fermé</p>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2024 Direction Générale des Douanes du Mali. Tous droits réservés.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script>
+        function showSuccess() {
+            document.querySelector('form').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>

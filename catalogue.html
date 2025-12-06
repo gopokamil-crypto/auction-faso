@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catalogue des Véhicules - Enchères Douanes Mali">
+    <title>Catalogue | Enchères Douanes Mali</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-main">
+            <div class="container">
+                <div class="header-inner">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="Accueil _ Douanes_files/Douanes-Logo_1.gif" alt="Logo Douanes Mali">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Title -->
+    <div class="page-title-section"
+        style="background: var(--color-primary); padding: 40px 0; color: white; text-align: center;">
+        <div class="container">
+            <h1 style="font-size: 32px; margin-bottom: 10px;">Catalogue des Véhicules</h1>
+            <p>Sélectionnez un véhicule pour voir les détails et participer à l'enchère.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+
+            <!-- Filters / Search -->
+            <div class="filters"
+                style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <h2 style="font-size: 20px; color: var(--color-primary);">Véhicules en Vedette</h2>
+                <div style="position: relative;">
+                    <input type="text" placeholder="Rechercher un véhicule..."
+                        style="padding: 10px 15px; border: 1px solid #ddd; border-radius: 5px; width: 250px;">
+                    <i class="fas fa-search"
+                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+                </div>
+            </div>
+
+            <!-- Vehicle Grid -->
+            <div id="vehicle-grid" class="vehicle-grid">
+                <!-- Vehicles will be populated by JS -->
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h4>Heure de travail</h4>
+                    <p><strong>Lundi-Jeudi:</strong> 8h30 à 12h30</p>
+                    <p><strong>Vendredi:</strong> 8h à 12h</p>
+                    <p><strong>Sunday:</strong> Fermé</p>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2024 Direction Générale des Douanes du Mali. Tous droits réservés.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script>
+        // Vehicle Data
+        const vehicles = [
+            {
+                id: 1,
+                name: "Toyota Hilux (Double Cab)",
+                year: "2024",
+                category: "Pick-up / Utilitaire",
+                price: "3,500,000 FCFA",
+                stock: 20,
+                image: "images/hilux.png"
+            },
+            {
+                id: 2,
+                name: "Toyota Land Cruiser 300",
+                year: "2024",
+                category: "VUS de Luxe",
+                price: "6,000,000 FCFA",
+                stock: 2,
+                image: "images/land-cruiser.png"
+            },
+            {
+                id: 3,
+                name: "Toyota Land Cruiser Prado TX",
+                year: "2024",
+                category: "VUS",
+                price: "4,500,000 FCFA",
+                stock: 6,
+                image: "images/toyota_prado_tx.png"
+            },
+            {
+                id: 4,
+                name: "Toyota Fortuner",
+                year: "2024",
+                category: "VUS",
+                price: "3,800,000 FCFA",
+                stock: 6,
+                image: "images/fortuner.jpg"
+            },
+            {
+                id: 5,
+                name: "Toyota RAV4",
+                year: "2024",
+                category: "Crossover Urbain",
+                price: "3,200,000 FCFA",
+                stock: 8,
+                image: "images/rav4.png"
+            },
+            {
+                id: 6,
+                name: "Toyota Yaris Vitz",
+                year: "2023-2025",
+                category: "Économique",
+                price: "1,500,000 FCFA",
+                stock: 15,
+                image: "images/yaris.png"
+            },
+            {
+                id: 7,
+                name: "Mitsubishi L200 (Triton)",
+                year: "2024",
+                category: "Pick-up / Utilitaire",
+                price: "3,200,000 FCFA",
+                stock: 12,
+                image: "images/Mutsibushi.png"
+            },
+            {
+                id: 8,
+                name: "Hyundai Tucson",
+                year: "2024",
+                category: "Crossover VUS",
+                price: "2,800,000 FCFA",
+                stock: 5,
+                image: "images/tucson.png"
+            },
+            {
+                id: 9,
+                name: "Toyota Urban Cruiser",
+                year: "2024",
+                category: "Crossover",
+                price: "2,200,000 FCFA",
+                stock: 10,
+                image: "images/urban-cruiser.png"
+            },
+            {
+                id: 10,
+                name: "Kia Sorento",
+                year: "2024",
+                category: "Crossover VUS",
+                price: "3,200,000 FCFA",
+                stock: 10,
+                image: "images/sorento.jpg"
+            },
+            {
+                id: 11,
+                name: "Toyota Corolla",
+                year: "2024",
+                category: "Berline",
+                price: "2,100,000 FCFA",
+                stock: 12,
+                image: "images/corolla-toyota.png"
+            },
+            {
+                id: 12,
+                name: "Hyundai Accent",
+                year: "2024",
+                category: "Berline Économique",
+                price: "1,800,000 FCFA",
+                stock: 8,
+                image: "images/hyundai-accent.png"
+            },
+            {
+                id: 13,
+                name: "Kia Sportage",
+                year: "2024",
+                category: "Crossover VUS",
+                price: "2,700,000 FCFA",
+                stock: 4,
+                image: "images/sportage.png"
+            },
+            {
+                id: 14,
+                name: "Suzuki Grand Vitara",
+                year: "2024",
+                category: "Crossover VUS",
+                price: "2,400,000 FCFA",
+                stock: 7,
+                image: "images/suziki-grand.png"
+            },
+            {
+                id: 15,
+                name: "Toyota Corolla Cross",
+                year: "2024",
+                category: "VUS",
+                price: "2,600,000 FCFA",
+                stock: 4,
+                image: "images/corolla-cross.png"
+            }
+        ];
+
+        // Render Vehicles
+        const grid = document.getElementById('vehicle-grid');
+
+        vehicles.forEach(vehicle => {
+            const card = document.createElement('div');
+            card.className = 'vehicle-card fade-in-element';
+
+            // Logic to handle placeholders visually if image fails or is a placeholder path
+            // For now, we'll just use the path. In a real app, we'd have an onerror handler.
+
+            card.innerHTML = `
+                <div class="vehicle-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                    <span class="vehicle-badge">${vehicle.category}</span>
+                    <img src="${vehicle.image}" alt="${vehicle.name}" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div style=\\'text-align:center; color:#999;\\'><i class=\\'fas fa-car fa-3x\\'></i><br>Image Indisponible</div>'">
+                </div>
+                <div class="vehicle-info">
+                    <h3 class="vehicle-name">${vehicle.name} <span style="color: var(--color-gray); font-size: 14px; font-weight: 400;">(${vehicle.year})</span></h3>
+                    <div class="vehicle-price">${vehicle.price}</div>
+                    <div class="vehicle-stock"><i class="fas fa-box"></i> ${vehicle.stock} Pièces Disponibles</div>
+                    <a href="detail.html?id=${vehicle.id}" class="btn-primary" style="width: 100%; text-align: center; padding: 10px; display: block; margin-top: 10px;">Voir les Détails</a>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+
+</html>

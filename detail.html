@@ -223,7 +223,7 @@
             {
                 id: 2,
                 name: "Toyota Land Cruiser 300",
-                category: "VUS de Luxe",
+                category: "SUV 4x4 LUXUEUX",
                 price: "6,000,000 FCFA",
                 stock: 2,
                 image: "images/land-cruiser.png",
@@ -234,7 +234,7 @@
             {
                 id: 3,
                 name: "Toyota Land Cruiser Prado TX",
-                category: "VUS",
+                category: "SUV 4x4 LUXUEUX",
                 price: "4,500,000 FCFA",
                 stock: 6,
                 image: "images/toyota_prado_tx.png",
@@ -245,7 +245,7 @@
             {
                 id: 4,
                 name: "Toyota Fortuner",
-                category: "VUS",
+                category: "SUV",
                 price: "3,800,000 FCFA",
                 stock: 6,
                 image: "images/fortuner.jpg",
@@ -266,7 +266,7 @@
             },
             {
                 id: 6,
-                name: "Toyota Yaris Vitz",
+                name: "Toyota Yaris",
                 category: "Économique",
                 price: "1,500,000 FCFA",
                 stock: 15,
@@ -289,7 +289,7 @@
             {
                 id: 8,
                 name: "Hyundai Tucson",
-                category: "Crossover VUS",
+                category: "Crossover SUV",
                 price: "2,800,000 FCFA",
                 stock: 5,
                 image: "images/tucson.png",
@@ -344,7 +344,7 @@
             {
                 id: 13,
                 name: "Kia Sportage",
-                category: "Crossover VUS",
+                category: "Crossover SUV",
                 price: "2,700,000 FCFA",
                 stock: 4,
                 image: "images/sportage.png",
@@ -355,7 +355,7 @@
             {
                 id: 14,
                 name: "Suzuki Grand Vitara",
-                category: "Crossover VUS",
+                category: "Crossover SUV",
                 price: "2,400,000 FCFA",
                 stock: 7,
                 image: "images/suziki-grand.png",
@@ -366,7 +366,7 @@
             {
                 id: 15,
                 name: "Toyota Corolla Cross",
-                category: "VUS",
+                category: "SUV",
                 price: "2,600,000 FCFA",
                 stock: 4,
                 image: "images/corolla-cross.png",
@@ -437,23 +437,53 @@
                         <td class="spec-label">Disponibilité</td>
                         <td class="spec-value">${vehicle.stock} Unités</td>
                     </tr>
+                    <tr>
+                        <td class="spec-label">Statut Douanier</td>
+                        <td class="spec-value" style="color: #2e7d32; font-weight: 600;">
+                            <i class="fas fa-check-circle"></i> Dédouané (Taxes Payées)
+                        </td>
+                    </tr>
                 </table>
 
                 <div style="margin-top: 30px;">
-                    <a href="inscription.html?vehicle=${vehicle.id}&name=${encodeURIComponent(vehicle.name)}&image=${encodeURIComponent(vehicle.image)}" class="btn-primary" style="display: block; text-align: center; margin-bottom: 15px;">Obtenir ce Véhicule</a>
+                    <a href="inscription.html?vehicle=${vehicle.id}&name=${encodeURIComponent(vehicle.name)}&image=${encodeURIComponent(vehicle.image)}&price=${encodeURIComponent(vehicle.price)}" class="btn-primary" style="display: block; text-align: center; margin-bottom: 15px;">Obtenir ce Véhicule</a>
                     <a href="https://wa.me/22300000000?text=Je suis intéressé par ${encodeURIComponent(vehicle.name)}" class="btn-secondary" style="display: block; text-align: center;">Contacter un Agent</a>
                 </div>
             `;
+
+            // Calculate 30% Reservation Amount
+            const priceString = vehicle.price.replace(/[^0-9]/g, '');
+            const price = parseInt(priceString);
+            const reservationAmount = Math.floor(price * 0.30);
+            const formattedReservation = reservationAmount.toLocaleString('fr-FR') + ' FCFA';
 
             // Update Specs (Left Column) - Removed Documents section
             const specsBox = document.querySelectorAll('.detail-info-box')[0];
             const documentsBox = document.querySelectorAll('.detail-info-box')[2]; // The documents box
 
-            // Remove documents box content but keep status
+            // Update documents box with Reservation Info
             if (documentsBox) {
                 documentsBox.innerHTML = `
-                    <div style="margin-top: 0; background: #e8f5e9; color: #2e7d32; padding: 10px; border-radius: 5px; text-align: center; font-weight: 600;">
-                        <i class="fas fa-check-circle"></i> Statut Douanier : Dédouané (Taxes Payées)
+                    <div style="margin-top: 0; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #fff;">
+                        <h4 style="margin-bottom: 5px; font-size: 16px; color: #333;">Réservation Immédiate</h4>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 20px;">
+                            Sécurisez ce véhicule au <strong>prix affiché (sans enchère)</strong> en payant l'acompte de 30%.
+                        </p>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
+                                <span style="color: #666;">Prix Véhicule</span>
+                                <span style="font-weight: 500;">${vehicle.price}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid #f5f5f5;">
+                                <span style="font-weight: 600; color: #333;">Acompte (30%)</span>
+                                <span style="font-size: 18px; font-weight: 700; color: var(--color-primary);">${formattedReservation}</span>
+                            </div>
+                        </div>
+
+                        <div style="font-size: 12px; color: #999; margin-top: 15px;">
+                            + 100,000 FCFA de frais de participation.
+                        </div>
                     </div>
                 `;
             }

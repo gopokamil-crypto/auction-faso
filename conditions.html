@@ -74,34 +74,43 @@
                 <!-- Terms Text -->
                 <div
                     style="height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 20px; margin-bottom: 20px; background: #fff; font-size: 14px; line-height: 1.6;">
-                    <h4>1. Objet</h4>
-                    <p>Les présentes conditions régissent la vente aux enchères de véhicules par la Direction Générale
-                        des Douanes du Mali.</p>
 
-                    <h4>2. État des Véhicules</h4>
-                    <p>Les véhicules sont vendus "en l'état". Bien que nous fournissions un rapport de condition, il est
-                        de la responsabilité de l'acheteur de vérifier l'état du véhicule lors des journées
-                        d'inspection.</p>
+                    <h4 style="color: var(--color-primary); margin-bottom: 15px;">COMMUNIQUÉ</h4>
 
-                    <h4>3. Frais de Participation</h4>
-                    <p>Pour participer à la vente, des frais d'inscription non remboursables de <strong>100 000
-                            FCFA</strong> doivent être réglés. Ce montant donne droit à un code QR d'accès unique.</p>
+                    <p style="margin-bottom: 15px;">Dans le but de simplifier le processus de vente pour les services
+                        confiés aux douanes, plusieurs options sont proposées.</p>
 
-                    <h4>4. Paiement du Véhicule</h4>
-                    <p>Le paiement intégral du véhicule adjugé doit être effectué dans les 48 heures suivant la
-                        confirmation de l'enchère.</p>
+                    <p style="margin-bottom: 15px;">Le souscripteur a la possibilité de s'inscrire plusieurs fois,
+                        sachant que <strong>chaque inscription correspond à un véhicule aléatoire qui sera proposé au
+                            prix de base</strong>.</p>
 
-                    <h4>5. Retrait</h4>
-                    <p>Le véhicule doit être retiré du parc sous 5 jours ouvrables après le paiement complet. Des frais
-                        de gardiennage peuvent s'appliquer au-delà.</p>
+                    <p style="margin-bottom: 15px;">Pour garantir l'obtention du véhicule souhaité, le souscripteur doit
+                        s'acquitter d'un <strong>acompte de 30% du prix de base</strong> lors de son inscription.
+                        <strong>Le véhicule est alors acquis à ce prix fixe, sans aucune augmentation ni enchère
+                            supplémentaire.</strong></p>
 
-                    <h4>6. Annulation</h4>
-                    <p>Toute enchère remportée est définitive. En cas de non-paiement, l'acompte sera conservé à titre
-                        de pénalité.</p>
+                    <p style="margin-bottom: 15px;">Après paiement, le souscripteur sera <strong>enregistré dans notre
+                            base de données et recevra un code QR</strong> associé à son véhicule désiré.</p>
 
-                    <h4>6. Dédouanement</h4>
-                    <p>Tous les véhicules présentés sont dédouanés. L'acheteur recevra tous les documents nécessaires
-                        pour l'immatriculation.</p>
+                    <p style="margin-bottom: 15px;"><strong>Les 70% restants du prix seront à régler le jour de la
+                            vente</strong> pour acquérir le nombre de véhicules souhaité.</p>
+
+                    <h4 style="margin-top: 20px;">Conditions Générales</h4>
+
+                    <p style="margin-bottom: 10px;">• Les véhicules sont vendus "en l'état". Un rapport de condition est
+                        fourni pour inspection.</p>
+
+                    <p style="margin-bottom: 10px;">• Le paiement intégral doit être effectué dans les <strong>48
+                            heures</strong> suivant la confirmation.</p>
+
+                    <p style="margin-bottom: 10px;">• Le véhicule doit être retiré sous <strong>5 jours
+                            ouvrables</strong> après le paiement complet.</p>
+
+                    <p style="margin-bottom: 10px;">• Tous les véhicules présentés sont <strong>dédouanés</strong>.
+                        L'acheteur recevra tous les documents nécessaires pour l'immatriculation.</p>
+
+                    <p style="margin-bottom: 10px;">• Toute inscription est définitive. En cas de non-paiement,
+                        l'acompte sera conservé à titre de pénalité.</p>
                 </div>
 
                 <form action="paiement.html" method="GET" id="termsForm">
@@ -162,6 +171,7 @@
         const vehicleId = urlParams.get('vehicle');
         const vehicleName = urlParams.get('name');
         const vehicleImage = urlParams.get('image');
+        const vehiclePrice = urlParams.get('price');
 
         // Update vehicle display if parameters exist
         if (vehicleName) {
@@ -177,6 +187,14 @@
             if (vehicleImageEl) {
                 vehicleImageEl.src = vehicleImage;
                 vehicleImageEl.alt = vehicleName || 'Véhicule';
+            }
+        }
+
+        // Update vehicle price if parameter exists
+        if (vehiclePrice) {
+            const vehiclePriceEl = document.querySelector('.form-container div[style*="color: var(--color-accent-green)"]');
+            if (vehiclePriceEl) {
+                vehiclePriceEl.textContent = vehiclePrice;
             }
         }
 

@@ -59,6 +59,25 @@
 
             <div class="form-container" style="max-width: 600px; margin: 0 auto;">
 
+                <!-- Vehicle Summary -->
+                <div id="vehicleSummary"
+                    style="background: #f9f9f9; padding: 20px; margin-bottom: 30px; border: 1px solid #ddd; border-radius: 8px;">
+                    <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--color-primary);">Véhicule Sélectionné
+                    </h3>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <img id="vehicleImage" src="images/toyota_yaris_2023_1764975873668.png" alt="Véhicule"
+                            style="width: 100px; height: 70px; object-fit: cover; border-radius: 5px;">
+                        <div style="flex: 1;">
+                            <div id="vehicleName"
+                                style="font-weight: 700; color: var(--color-primary); margin-bottom: 5px;">Toyota Yaris
+                                2023 (Hayon)</div>
+                            <div id="vehiclePrice"
+                                style="color: var(--color-accent-green); font-weight: 600; font-size: 18px;">13,250,000
+                                FCFA</div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Payment Instructions Card -->
                 <div
                     style="border: 1px solid var(--color-primary); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background: white;">
@@ -108,8 +127,7 @@
 
                         <!-- WhatsApp Button -->
                         <div style="text-align: center; margin-bottom: 25px;">
-                            <a href="https://wa.me/22300000000?text=Bonjour, voici ma preuve de paiement pour l'enchère."
-                                class="btn-whatsapp"
+                            <a href="#" onclick="handleWhatsAppClick(event)" class="btn-whatsapp"
                                 style="display: inline-block; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; background-color: #25D366; color: white; font-size: 16px; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3); transition: transform 0.2s;">
                                 <i class="fab fa-whatsapp" style="margin-right: 10px; font-size: 20px;"></i> Envoyer
                                 capture sur WhatsApp
@@ -130,6 +148,9 @@
 
                 <script src="js/supabase-config.js"></script>
                 <script>
+                    // Global variable for WhatsApp number
+                    let whatsappNumber = '22300000000'; // Default fallback
+
                     // Fetch Payment Settings from Supabase
                     async function loadPaymentSettings() {
                         try {
@@ -152,8 +173,62 @@
                         }
                     }
 
+                    // Fetch Contact Settings (WhatsApp)
+                    async function loadContactSettings() {
+                        try {
+                            const { data, error } = await supabase
+                                .from('contact_settings')
+                                .select('whatsapp_number')
+                                .limit(1)
+                                .single();
+
+                            if (data && data.whatsapp_number) {
+                                // Remove spaces and special chars for the link
+                                whatsappNumber = data.whatsapp_number.replace(/[^0-9]/g, '');
+                            }
+                        } catch (err) {
+                            console.error('Error loading contact settings:', err);
+                        }
+                    }
+
+                    // Handle WhatsApp Click
+                    function handleWhatsAppClick(e) {
+                        e.preventDefault();
+
+                        // Open WhatsApp in new tab
+                        const message = "Bonjour, voici ma preuve de paiement pour l'enchère.";
+                        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+                        window.open(url, '_blank');
+
+                        // Redirect current page to success
+                        setTimeout(() => {
+                            window.location.href = 'success.html';
+                        }, 1000);
+                    }
+
                     // Load on page load
                     loadPaymentSettings();
+                    loadContactSettings();
+
+                    // Load vehicle information from URL
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const vehicleName = urlParams.get('name');
+                    const vehicleImage = urlParams.get('image');
+                    const vehiclePrice = urlParams.get('price');
+
+                    // Update vehicle summary if parameters exist
+                    if (vehicleName) {
+                        document.getElementById('vehicleName').textContent = vehicleName;
+                    }
+
+                    if (vehicleImage) {
+                        document.getElementById('vehicleImage').src = vehicleImage;
+                        document.getElementById('vehicleImage').alt = vehicleName || 'Véhicule';
+                    }
+
+                    if (vehiclePrice) {
+                        document.getElementById('vehiclePrice').textContent = vehiclePrice;
+                    }
                 </script>
             </div>
 

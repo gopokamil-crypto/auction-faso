@@ -877,6 +877,36 @@ button {
         flex-direction: column;
         align-items: center;
     }
+
+    /* Enhanced Mobile Breadcrumbs */
+    .steps-container {
+        gap: 10px;
+    }
+
+    .step {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .step-circle {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+
+    .step-line {
+        width: 40px;
+        height: 3px;
+        margin: 0 10px;
+    }
+
+    .step span {
+        font-size: 14px;
+        font-weight: 500;
+    }
 }
 
 /* Small Mobile */
@@ -900,6 +930,25 @@ button {
 
     .services-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Enhanced Small Mobile Breadcrumbs */
+    .step-circle {
+        width: 35px;
+        height: 35px;
+        font-size: 15px;
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+
+    .step-line {
+        width: 35px;
+        height: 3px;
+        margin: 0 8px;
+    }
+
+    .step span {
+        font-size: 13px;
     }
 }
 
@@ -1078,6 +1127,7 @@ html {
     background-color: var(--color-black) !important;
     border-color: var(--color-black) !important;
     color: var(--color-white) !important;
+    box-shadow: none !important;
 }
 
 /* Click effect for black buttons */
@@ -1310,7 +1360,29 @@ html {
 }
 
 .step.active+.step-line {
-    background: var(--color-accent-green);
+    background: var(--color-accent-green) !important;
+}
+
+/* Ensure all step elements use green when active */
+.steps-container .step.active,
+.steps-container .step.active .step-circle,
+.steps-container .step.active .step-line {
+    color: var(--color-accent-green);
+}
+
+.steps-container .step.active .step-circle {
+    background: var(--color-accent-green) !important;
+    color: white;
+}
+
+.steps-container .step.active .step-line {
+    background: var(--color-accent-green) !important;
+}
+
+/* Force the line after any active step to be green */
+.steps-container .step.active+.step-line,
+.steps-container .step.active .step-line {
+    background: var(--color-accent-green) !important;
 }
 
 /* FAQ */

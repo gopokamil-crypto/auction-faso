@@ -44,6 +44,20 @@
         </div>
     </div>
 
+    <style>
+        @media (max-width: 768px) {
+            .page-title-section {
+                padding: 60px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title-section {
+                padding: 50px 0;
+            }
+        }
+    </style>
+
     <!-- Main Content -->
     <main class="main-content">
         <div class="container">
@@ -227,9 +241,9 @@
                 </div>
                 <div class="vehicle-info">
                     <h3 class="vehicle-name" style="color: var(--color-black);">${vehicle.name} <span style="color: var(--color-gray); font-size: 14px; font-weight: 400;">(${vehicle.year})</span></h3>
-                    <div class="vehicle-price">${vehicle.price}</div>
+                    <div class="vehicle-price" style="color: var(--color-accent-red);">${vehicle.price}</div>
                     <div class="vehicle-stock"><i class="fas fa-box"></i> ${vehicle.stock} Pièces Disponibles</div>
-                    <a href="detail.html?id=${vehicle.id}" class="btn-black-red" style="width: 100%; text-align: center; padding: 10px; display: block; margin-top: 10px;">Voir les Détails</a>
+                    <a href="detail.html?id=${vehicle.id}" class="btn-black-red" style="width: 100%; text-align: center; padding: 10px; display: block; margin-top: 10px; background-color: var(--color-accent-green); border-color: var(--color-accent-green);">Voir les Détails</a>
                 </div>
             `;
             grid.appendChild(card);

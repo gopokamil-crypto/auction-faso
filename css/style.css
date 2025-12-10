@@ -30,7 +30,7 @@
     --color-text-dark: #333333;
 
     /* Typography */
-    --font-primary: 'Poppins', sans-serif;
+    --font-primary: 'Helvetica', Arial, sans-serif;
     --font-size-base: 14px;
     --font-size-small: 12px;
     --font-size-medium: 16px;
@@ -163,6 +163,13 @@ button {
     background-color: var(--color-black);
     border-color: var(--color-black);
     color: var(--color-white);
+}
+
+.btn-green-hover:hover {
+    background-color: var(--color-accent-green) !important;
+    border-color: var(--color-accent-green) !important;
+    color: var(--color-white) !important;
+    opacity: 1 !important;
 }
 
 /* ============================================
@@ -414,11 +421,11 @@ button {
 }
 
 .line-yellow {
-    background-color: var(--color-accent-yellow);
+    background-color: var(--color-accent-green);
 }
 
 .line-red {
-    background-color: var(--color-accent-red);
+    background-color: var(--color-accent-green);
 }
 
 /* ============================================
@@ -1040,24 +1047,45 @@ html {
     background-color: var(--color-primary);
     color: white;
     border-color: var(--color-primary);
+    box-shadow: none;
 }
 
 .hero-buttons .btn-primary:hover {
     background-color: var(--color-black);
     color: white;
     border-color: var(--color-black);
+    box-shadow: none;
 }
 
 .hero-buttons .btn-secondary {
     background-color: white;
     border-color: white;
     color: var(--color-black);
+    box-shadow: none;
 }
 
 .hero-buttons .btn-secondary:hover {
     background-color: var(--color-black);
     color: white;
     border-color: var(--color-black);
+    box-shadow: none;
+}
+
+/* Hover effects for green buttons */
+.btn-primary[style*="background-color: var(--color-accent-green)"]:hover,
+.btn-black-red[style*="background-color: var(--color-accent-green)"]:hover,
+.btn-secondary[style*="background-color: var(--color-accent-green)"]:hover {
+    background-color: var(--color-black) !important;
+    border-color: var(--color-black) !important;
+    color: var(--color-white) !important;
+}
+
+/* Click effect for black buttons */
+.btn-secondary[style*="background-color: var(--color-black)"]:active,
+.btn-detail-secondary[style*="background-color: var(--color-black)"]:active {
+    background-color: var(--color-accent-green) !important;
+    border-color: var(--color-accent-green) !important;
+    color: var(--color-white) !important;
 }
 
 /* Mobile Price Adjustment */
@@ -1219,8 +1247,8 @@ html {
 
 .form-control:focus {
     outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(0, 0, 139, 0.1);
+    border-color: var(--color-accent-green);
+    box-shadow: 0 0 0 3px rgba(0, 122, 68, 0.1);
 }
 
 /* Steps Indicator */
@@ -1266,11 +1294,11 @@ html {
 }
 
 .step.active {
-    color: var(--color-primary);
+    color: var(--color-accent-green);
 }
 
 .step.active .step-circle {
-    background: var(--color-primary);
+    background: var(--color-accent-green);
     color: white;
 }
 
@@ -1282,7 +1310,7 @@ html {
 }
 
 .step.active+.step-line {
-    background: var(--color-primary);
+    background: var(--color-accent-green);
 }
 
 /* FAQ */

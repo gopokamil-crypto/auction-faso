@@ -5,7 +5,8 @@ import sqlite3
 import os
 from urllib.parse import urlparse, parse_qs
 
-PORT = 3000
+# Use PORT from environment variable for Render, default to 3000 for local
+PORT = int(os.environ.get('PORT', 3000))
 DB_FILE = 'database/douanes.db'
 SCHEMA_FILE = 'database/schema.sql'
 
@@ -160,9 +161,12 @@ if __name__ == "__main__":
     init_db()
     # Allow address reuse to avoid "Address already in use" errors during restarts
     socketserver.TCPServer.allow_reuse_address = True
-    with socketserver.TCPServer(("", PORT), CustomHandler) as httpd:
-        print(f"Serving at http://localhost:{PORT}")
+    # Bind to 0.0.0.0 for Render deployment (allows external connections)
+    with socketserver.TCPServer(("0.0.0.0", PORT), CustomHandler) as httpd:
+        print(f"Server running on port {PORT}")
+        print(f"Local: http://localhost:{PORT}")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
+            print("\nServer stopped.")
             pass

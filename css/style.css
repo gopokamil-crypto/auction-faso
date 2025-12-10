@@ -6,27 +6,27 @@
    CSS VARIABLES (Design Tokens)
    ============================================ */
 :root {
-    /* Color Palette */
-    --color-primary: #00008b;
-    /* Dark Blue */
-    --color-primary-dark: #043d56;
-    /* Darker Blue on Hover */
-    --color-secondary: #5EB4E7;
-    /* Light Blue */
-    --color-accent-green: #79AF33;
-    /* Green (Line decoration) */
-    --color-accent-yellow: #fbff00;
-    /* Yellow (Line decoration) */
-    --color-accent-red: #ff0000;
-    /* Red (Line decoration) */
+    /* Color Palette - Burkina Faso Customs */
+    --color-primary: #DE2234;
+    /* Primary Red */
+    --color-primary-dark: #b31b2a;
+    /* Darker Red */
+    --color-secondary: #007A44;
+    /* Dark Green */
+    --color-accent-green: #007A44;
+    /* Proper Green */
+    --color-accent-yellow: #FCD116;
+    /* Burkina Faso Yellow */
+    --color-accent-red: #DE2234;
+    /* Red */
 
     /* Neutral Colors */
     --color-white: #ffffff;
     --color-black: #000000;
-    --color-gray-light: #f3f4f9;
-    /* Light background */
-    --color-gray: #999999;
-    --color-gray-dark: #a6a6a6;
+    --color-gray-light: #fcfcfc;
+    /* Light background from style guide */
+    --color-gray: #666666;
+    --color-gray-dark: #333333;
     --color-text-dark: #333333;
 
     /* Typography */
@@ -130,6 +130,36 @@ button {
     background: none;
 }
 
+.btn-primary {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    padding: 10px 20px;
+    border-radius: var(--border-radius-md);
+    transition: background-color var(--transition-fast);
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-accent-red);
+}
+
+.btn-black-red {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    padding: 10px 20px;
+    border-radius: var(--border-radius-md);
+    transition: background-color var(--transition-fast);
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-black-red:hover {
+    background-color: var(--color-accent-red);
+    color: var(--color-white);
+}
+
 /* ============================================
    UTILITY CLASSES
    ============================================ */
@@ -184,8 +214,9 @@ button {
 }
 
 .logo img {
-    max-height: 80px;
+    max-height: 100px;
     width: auto;
+    max-width: 100%;
 }
 
 /* ============================================
@@ -717,7 +748,7 @@ button {
    FOOTER
    ============================================ */
 .footer {
-    background-color: var(--color-primary);
+    background-color: var(--color-black);
     color: var(--color-white);
     padding: var(--spacing-lg) 0;
 }
@@ -967,8 +998,8 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 139, 0.7);
-    /* Blue overlay */
+    background: rgba(222, 34, 52, 0.7);
+    /* Red overlay */
     z-index: 1;
 }
 

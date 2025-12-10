@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Détails du Véhicule - Enchères Douanes Mali">
-    <title>Détails du Véhicule | Enchères Douanes Mali</title>
+    <meta name="description" content="Détails du Véhicule - Enchères Douanes Burkina Faso">
+    <title>Détails du Véhicule | Enchères Douanes Burkina Faso</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@
                 <div class="header-inner">
                     <div class="logo">
                         <a href="index.html">
-                            <img src="Accueil _ Douanes_files/Douanes-Logo_1.gif" alt="Logo Douanes Mali">
+                            <img src="../logo-banner.png" alt="Logo Douanes Burkina Faso">
                         </a>
                     </div>
                 </div>
@@ -89,7 +89,8 @@
                         <h1 id="vehicle-name"
                             style="font-size: 24px; color: var(--color-primary); margin-bottom: 10px;">Toyota Yaris 2023
                             (Hayon)</h1>
-                        <div style="font-size: 14px; color: var(--color-gray); margin-bottom: 20px;">Lot #4829 • Bamako
+                        <div style="font-size: 14px; color: var(--color-gray); margin-bottom: 20px;">Lot #4829 •
+                            Ouagadougou
                         </div>
 
                         <div
@@ -124,7 +125,7 @@
                         </table>
 
                         <div style="margin-top: 30px;">
-                            <a href="inscription.html" class="btn-primary"
+                            <a href="inscription.html" class="btn-black-red"
                                 style="display: block; text-align: center; margin-bottom: 15px;">Obtenir ce Véhicule</a>
                             <a href="https://wa.me/22300000000" class="btn-secondary"
                                 style="display: block; text-align: center;">Contacter un Agent</a>
@@ -392,7 +393,7 @@
             const infoBox = document.querySelectorAll('.detail-info-box')[1]; // The second one (Right Column)
             infoBox.innerHTML = `
                 <h1 id="vehicle-name" class="desktop-title" style="font-size: 24px; color: var(--color-primary); margin-bottom: 10px;">${vehicle.name}</h1>
-                <div style="font-size: 14px; color: var(--color-gray); margin-bottom: 20px;">Lot #${4800 + vehicle.id} • Bamako</div>
+                <div style="font-size: 14px; color: var(--color-gray); margin-bottom: 20px;">Lot #${4800 + vehicle.id} • Ouagadougou</div>
                 
                 <div style="background: #f0f7ff; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
                     <div style="font-size: 14px; color: var(--color-gray);">Prix de Mise à Prix Estimé</div>
@@ -429,7 +430,7 @@
                 </table>
 
                 <div style="margin-top: 30px;">
-                    <a href="inscription.html?vehicle=${vehicle.id}&name=${encodeURIComponent(vehicle.name)}&image=${encodeURIComponent(vehicle.image)}&price=${encodeURIComponent(vehicle.price)}" class="btn-primary" style="display: block; text-align: center; margin-bottom: 15px;">Obtenir ce Véhicule</a>
+                    <a href="inscription.html?vehicle=${vehicle.id}&name=${encodeURIComponent(vehicle.name)}&image=${encodeURIComponent(vehicle.image)}&price=${encodeURIComponent(vehicle.price)}" class="btn-black-red" style="display: block; text-align: center; margin-bottom: 15px;">Obtenir ce Véhicule</a>
                     <a href="https://wa.me/22300000000?text=Je suis intéressé par ${encodeURIComponent(vehicle.name)}" class="btn-secondary" style="display: block; text-align: center;">Contacter un Agent</a>
                 </div>
             `;

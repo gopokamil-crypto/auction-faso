@@ -147,10 +147,8 @@
                 </div>
 
                 <script src="js/supabase-config.js"></script>
+                <script src="js/agent-manager.js"></script>
                 <script>
-                    // Global variable for WhatsApp number
-                    let whatsappNumber = '22300000000'; // Default fallback
-
                     // Fetch Payment Settings from Supabase
                     async function loadPaymentSettings() {
                         try {
@@ -173,32 +171,13 @@
                         }
                     }
 
-                    // Fetch Contact Settings (WhatsApp)
-                    async function loadContactSettings() {
-                        try {
-                            const { data, error } = await supabase
-                                .from('contact_settings')
-                                .select('whatsapp_number')
-                                .limit(1)
-                                .single();
-
-                            if (data && data.whatsapp_number) {
-                                // Remove spaces and special chars for the link
-                                whatsappNumber = data.whatsapp_number.replace(/[^0-9]/g, '');
-                            }
-                        } catch (err) {
-                            console.error('Error loading contact settings:', err);
-                        }
-                    }
-
                     // Handle WhatsApp Click
                     function handleWhatsAppClick(e) {
                         e.preventDefault();
 
-                        // Open WhatsApp in new tab
+                        // Open WhatsApp with agent's number
                         const message = "Bonjour, voici ma preuve de paiement pour l'enchère.";
-                        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-                        window.open(url, '_blank');
+                        openAgentWhatsApp(message);
 
                         // Redirect current page to success
                         setTimeout(() => {
@@ -208,7 +187,6 @@
 
                     // Load on page load
                     loadPaymentSettings();
-                    loadContactSettings();
 
                     // Load vehicle information from URL
                     const urlParams = new URLSearchParams(window.location.search);

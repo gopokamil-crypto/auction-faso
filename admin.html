@@ -228,6 +228,116 @@
                 opacity: 1
             }
         }
+
+        /* ====== RESPONSIVE STYLES ====== */
+        @media (max-width: 768px) {
+            .admin-container {
+                margin: 20px 10px;
+                border-radius: 10px;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .admin-header h2 {
+                font-size: 20px;
+            }
+
+            .admin-tabs {
+                flex-direction: column;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+
+            .admin-tab {
+                padding: 12px;
+                font-size: 14px;
+                white-space: nowrap;
+                min-width: 150px;
+            }
+
+            .admin-content {
+                padding: 15px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            /* Make tables horizontally scrollable */
+            .user-table,
+            .agent-table {
+                font-size: 12px;
+            }
+
+            .user-table th,
+            .user-table td {
+                padding: 8px 5px;
+                white-space: nowrap;
+            }
+
+            /* Stack form fields vertically on mobile */
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .form-control {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            /* Modal adjustments */
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            /* Button adjustments */
+            .btn-primary,
+            .btn-secondary {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            /* Hide some columns on very small screens */
+            @media (max-width: 480px) {
+                .user-table td:nth-child(4),
+                .user-table th:nth-child(4) {
+                    display: none; /* Hide City column */
+                }
+
+                .user-table td:nth-child(5),
+                .user-table th:nth-child(5) {
+                    display: none; /* Hide NINA column */
+                }
+            }
+        }
+
+        /* Tablet landscape */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .admin-container {
+                margin: 30px 20px;
+            }
+
+            .admin-tabs {
+                overflow-x: auto;
+            }
+
+            .admin-tab {
+                font-size: 14px;
+                padding: 12px 10px;
+            }
+        }
     </style>
 </head>
 
@@ -262,9 +372,6 @@
                     </div>
                     <div class="admin-tab" onclick="switchTab('payment')">
                         <i class="fas fa-credit-card"></i> Configuration Paiement
-                    </div>
-                    <div class="admin-tab" onclick="switchTab('contact')">
-                        <i class="fab fa-whatsapp"></i> Contact WhatsApp
                     </div>
                 </div>
 
@@ -338,44 +445,6 @@
                         </form>
                     </div>
 
-                    <!-- WHATSAPP CONTACT TAB -->
-                    <div id="contact-tab" class="tab-pane">
-                        <h3 style="margin-bottom: 20px; color: var(--color-primary);">Gérer le Numéro WhatsApp de
-                            Contact</h3>
-                        <p style="color: #666; margin-bottom: 30px;">Les clients utiliseront ce numéro pour vous
-                            contacter. Vous pouvez le modifier ici sans accéder au code.</p>
-
-                        <form id="contactForm" onsubmit="updateContact(event)">
-                            <div class="form-group">
-                                <label class="form-label">Numéro WhatsApp Actuel</label>
-                                <input type="tel" id="currentWhatsApp" class="form-control" disabled
-                                    style="background: #f8f9fa; color: #666;">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Nouveau Numéro WhatsApp</label>
-                                <input type="tel" id="whatsappNumber" class="form-control"
-                                    placeholder="+226 XX XX XX XX" required>
-                                <small style="color: #666;">Format: +226 XX XX XX XX</small>
-                            </div>
-
-                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                <button type="submit" class="btn-primary">
-                                    <i class="fas fa-save"></i> Enregistrer le Nouveau Numéro
-                                </button>
-                                <button type="button" class="btn-secondary" onclick="testWhatsApp()"
-                                    style="background: #25D366; border-color: #25D366;">
-                                    <i class="fab fa-whatsapp"></i> Tester le Numéro
-                                </button>
-                                <div id="contactLoader" class="loader"
-                                    style="display: inline-block; vertical-align: middle; margin: 0;"></div>
-                            </div>
-                            <div id="contactSuccess"
-                                style="display: none; margin-top: 15px; padding: 10px; background: #d4edda; color: #155724; border-radius: 5px;">
-                                ✓ Numéro WhatsApp mis à jour avec succès !
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -412,10 +481,6 @@
                 document.querySelectorAll('.admin-tab')[1].classList.add('active');
                 document.getElementById('payment-tab').classList.add('active');
                 loadPaymentSettings();
-            } else if (tabName === 'contact') {
-                document.querySelectorAll('.admin-tab')[2].classList.add('active');
-                document.getElementById('contact-tab').classList.add('active');
-                loadContactSettings();
             }
         }
 
@@ -603,61 +668,12 @@
             }
         }
 
-        // Load Contact Settings
-        async function loadContactSettings() {
-            try {
-                const { data, error } = await supabase
-                    .from('contact_settings')
-                    .select('*')
-                    .limit(1)
-                    .single();
-
-                if (data) {
-                    document.getElementById('currentWhatsApp').value = data.whatsapp_number;
-                    document.getElementById('whatsappNumber').value = data.whatsapp_number;
-                }
-            } catch (error) {
-                console.error('Error loading contact:', error);
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const userModal = document.getElementById('userModal');
+            if (event.target == userModal) {
+                userModal.style.display = "none";
             }
-        }
-
-        // Update WhatsApp Contact
-        async function updateContact(e) {
-            e.preventDefault();
-            const loader = document.getElementById('contactLoader');
-            const successMsg = document.getElementById('contactSuccess');
-            loader.style.display = 'inline-block';
-            successMsg.style.display = 'none';
-
-            const newNumber = document.getElementById('whatsappNumber').value;
-
-            try {
-                const { error } = await supabase
-                    .from('contact_settings')
-                    .update({
-                        whatsapp_number: newNumber,
-                        updated_at: new Date().toISOString()
-                    })
-                    .eq('id', 1);
-
-                if (error) throw error;
-
-                document.getElementById('currentWhatsApp').value = newNumber;
-                successMsg.style.display = 'block';
-                setTimeout(() => successMsg.style.display = 'none', 5000);
-            } catch (error) {
-                console.error('Error updating contact:', error);
-                alert('Erreur lors de la mise à jour: ' + error.message);
-            } finally {
-                loader.style.display = 'none';
-            }
-        }
-
-        // Test WhatsApp Number
-        function testWhatsApp() {
-            const number = document.getElementById('whatsappNumber').value;
-            const cleanNumber = number.replace(/\s+/g, '');
-            window.open(`https://wa.me/${cleanNumber}`, '_blank');
         }
 
         // Initial Load

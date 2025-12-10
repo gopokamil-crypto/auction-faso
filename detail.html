@@ -15,6 +15,9 @@
 
     <!-- Custom Styles -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -128,7 +131,7 @@
                             <a href="inscription.html" class="btn-black-red"
                                 style="display: block; text-align: center; margin-bottom: 15px; background-color: var(--color-accent-green); border-color: var(--color-accent-green);">Obtenir
                                 ce Véhicule</a>
-                            <a href="https://wa.me/22300000000" class="btn-detail-secondary"
+                            <a href="javascript:void(0)" onclick="openAgentWhatsApp('Bonjour, je souhaite obtenir des informations sur les véhicules disponibles.')" class="btn-detail-secondary"
                                 style="display: block; text-align: center; background-color: var(--color-black); border-color: var(--color-black); color: var(--color-white);">Contacter
                                 un Agent</a>
                         </div>
@@ -164,6 +167,8 @@
     </main>
 
     <!-- Scripts -->
+    <script src="js/supabase-config.js"></script>
+    <script src="js/agent-manager.js"></script>
     <script src="js/main.js"></script>
     <style>
         /* Mobile Layout Adjustments */
@@ -433,7 +438,7 @@
 
                 <div style="margin-top: 30px;">
                     <a href="inscription.html?vehicle=${vehicle.id}&name=${encodeURIComponent(vehicle.name)}&image=${encodeURIComponent(vehicle.image)}&price=${encodeURIComponent(vehicle.price)}" class="btn-black-red" style="display: block; text-align: center; margin-bottom: 15px; background-color: var(--color-accent-green); border-color: var(--color-accent-green);">Obtenir ce Véhicule</a>
-                    <a href="https://wa.me/22300000000?text=Je suis intéressé par ${encodeURIComponent(vehicle.name)}" class="btn-secondary" style="display: block; text-align: center; background-color: var(--color-black); border-color: var(--color-black); color: var(--color-white);">Contacter un Agent</a>
+                    <a href="javascript:void(0)" onclick="openAgentWhatsApp('Je suis intéressé par ${vehicle.name}')" class="btn-secondary" style="display: block; text-align: center; background-color: var(--color-black); border-color: var(--color-black); color: var(--color-white);">Contacter un Agent</a>
                 </div>
             `;
 

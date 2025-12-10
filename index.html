@@ -15,6 +15,9 @@
 
     <!-- Custom Styles -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -65,7 +68,7 @@
                     <a href="catalogue.html" class="btn-primary"
                         style="background-color: var(--color-accent-green); border-color: var(--color-accent-green);">Voir
                         et Sélectionner les Véhicules</a>
-                    <a href="https://wa.me/22373173924" class="btn-secondary"
+                    <a href="javascript:void(0)" onclick="openAgentWhatsApp('Bonjour, je souhaite obtenir plus d\'informations sur les enchères de véhicules.')" class="btn-secondary"
                         style="background-color: var(--color-black); border-color: var(--color-black); color: var(--color-white);">Contacter
                         un Agent</a>
                 </div>
@@ -189,6 +192,8 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="js/supabase-config.js"></script>
+    <script src="js/agent-manager.js"></script>
     <script src="js/main.js"></script>
     <script>
         // FAQ Accordion

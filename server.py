@@ -27,7 +27,30 @@ def init_db():
 class CustomHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         parsed_path = urlparse(self.path)
-        
+
+        # Handle agent slug URLs (e.g., /gouv/, /u/index.html)
+        path_parts = parsed_path.path.strip('/').split('/')
+
+        # Check if first part is a potential agent slug
+        # Skip if: it's empty, a known folder, or an HTML file at root level
+        is_root_html_file = len(path_parts) == 1 and path_parts[0].endswith('.html')
+        known_paths = ['api', 'css', 'js', 'images', 'database', 'favicon.ico']
+
+        if (len(path_parts) >= 1 and path_parts[0] and
+            path_parts[0] not in known_paths and
+            not is_root_html_file):
+            # This is an agent slug URL
+            agent_slug = path_parts[0]
+
+            # Determine the actual file to serve
+            if len(path_parts) == 1:
+                # /gouv/ or /gouv -> serve index.html
+                self.path = '/index.html'
+            else:
+                # /gouv/catalogue.html -> serve catalogue.html
+                # Remove the slug from the path
+                self.path = '/' + '/'.join(path_parts[1:])
+
         # API: Get Users
         if parsed_path.path == '/api/users':
             self.send_response(200)

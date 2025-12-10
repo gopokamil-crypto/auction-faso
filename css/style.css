@@ -214,9 +214,10 @@ button {
 }
 
 .logo img {
-    max-height: 100px;
+    max-height: 120px;
     width: auto;
     max-width: 100%;
+    object-fit: contain;
 }
 
 /* ============================================
@@ -944,7 +945,7 @@ html {
 /* Buttons */
 .btn-primary {
     display: inline-block;
-    background-color: var(--color-primary);
+    background-color: var(--color-black);
     color: var(--color-white);
     padding: 12px 30px;
     border-radius: var(--border-radius-md);
@@ -952,31 +953,33 @@ html {
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: all var(--transition-normal);
-    border: 2px solid var(--color-primary);
+    border: 2px solid var(--color-black);
 }
 
 .btn-primary:hover {
-    background-color: var(--color-accent-green);
-    border-color: var(--color-accent-green);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 139, 0.3);
+    box-shadow: 0 5px 15px rgba(222, 34, 52, 0.3);
+    color: var(--color-white);
 }
 
 .btn-secondary {
     display: inline-block;
-    background-color: transparent;
-    color: var(--color-primary);
+    background-color: var(--color-black);
+    color: var(--color-white);
     padding: 12px 30px;
     border-radius: var(--border-radius-md);
     font-weight: var(--font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: all var(--transition-normal);
-    border: 2px solid var(--color-primary);
+    border: 2px solid var(--color-black);
 }
 
 .btn-secondary:hover {
     background-color: var(--color-primary);
+    border-color: var(--color-primary);
     color: var(--color-white);
 }
 

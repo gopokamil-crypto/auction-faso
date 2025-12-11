@@ -37,15 +37,33 @@
     </header>
 
     <!-- Breadcrumb -->
-    <div style="background: #f9f9f9; padding: 15px 0; border-bottom: 1px solid #eee;">
+    <nav class="breadcrumb-nav">
         <div class="container">
-            <a href="index.html" style="color: var(--color-gray);">Accueil</a> <span
-                style="margin: 0 10px; color: var(--color-gray);">></span>
-            <a href="catalogue.html" style="color: var(--color-gray);">Catalogue</a> <span
-                style="margin: 0 10px; color: var(--color-gray);">></span>
-            <span style="color: var(--color-primary); font-weight: 600;" id="breadcrumb-name">Détails du Véhicule</span>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index.html" class="breadcrumb-link">
+                        <i class="fas fa-home"></i>
+                        <span class="breadcrumb-text">Accueil</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-separator">
+                    <i class="fas fa-chevron-right"></i>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="catalogue.html" class="breadcrumb-link">
+                        <i class="fas fa-car"></i>
+                        <span class="breadcrumb-text">Catalogue</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-separator">
+                    <i class="fas fa-chevron-right"></i>
+                </li>
+                <li class="breadcrumb-item breadcrumb-active">
+                    <span id="breadcrumb-name">Détails du Véhicule</span>
+                </li>
+            </ol>
         </div>
-    </div>
+    </nav>
 
     <!-- Main Content -->
     <main class="main-content">

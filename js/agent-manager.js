@@ -13,17 +13,31 @@ const AGENT_CACHE_KEY = 'current_agent_data';
 function getAgentSlugFromURL() {
     const pathname = window.location.pathname;
 
-    // Remove leading and trailing slashes
+    // Remove leading/trailing slashes
     const cleanPath = pathname.replace(/^\/+|\/+$/g, '');
 
-    // If empty or just a file name (no slash), it's root
-    if (!cleanPath || !cleanPath.includes('/')) {
+    // Empty path = root
+    if (!cleanPath) {
         return 'root';
     }
 
-    // Extract first segment as slug (e.g., /u/index.html -> 'u')
+    // Get first segment
     const segments = cleanPath.split('/');
-    return segments[0] || 'root';
+    const firstSegment = segments[0];
+
+    // Check if first segment is an HTML file (root page like /index.html)
+    if (firstSegment.endsWith('.html')) {
+        return 'root';
+    }
+
+    // Check if first segment is a known static folder (not an agent)
+    const staticPaths = ['css', 'js', 'images', 'database', 'api'];
+    if (staticPaths.includes(firstSegment)) {
+        return 'root';
+    }
+
+    // First segment is the agent slug (e.g., /gouv/ -> 'gouv', /u/catalogue.html -> 'u')
+    return firstSegment;
 }
 
 /**
